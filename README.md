@@ -13,7 +13,19 @@ finds, never contacts the service the key belongs to, and never touches a
 live target. It reads text and reports where a credential is, with a
 redacted preview, and tells you to rotate it.
 
+**Full write-up:** [docs/REPORT.md](docs/REPORT.md) covers the design,
+evaluation, results and limitations.
+
 ## How it works
+
+```mermaid
+flowchart LR
+    S[Files or git history] --> L[Each line]
+    L --> R[Format rules<br/>AKIA, ghp_, sk_live_, ...]
+    L --> E[Entropy check<br/>name + length + filters]
+    R --> O[Report with redacted preview]
+    E --> O
+```
 
 Two layers of detection, run on every line of every scanned file:
 
