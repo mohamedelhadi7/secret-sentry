@@ -1,0 +1,37 @@
+name: scan
+
+# Runs the test suite and the benchmark on every push and pull request,
+# and checks that the scanner itself, detectors.py and eval/benchmark.py
+# contain no flagged secrets (the fixtures in samples/ and
+# eval/benchmark_corpus.py are deliberately "vulnerable" test data and are
+# excluded).
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-and-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pytest
+
+      - name: Run test suite
+        run: python -m pytest tests -v
+
+      - name: Run benchmark corpus
+        run: python eval/benchmark.py
+
+      - name: Scan this whole repo, including its git history
+        # Test fixtures are stored hex-encoded and only assembled in
+        # memory, so the repo itself must contain zero secret-shaped text.
+        run: python scanner.py . --history
