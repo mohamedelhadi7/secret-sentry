@@ -16,6 +16,12 @@ redacted preview, and tells you to rotate it.
 **Full write-up:** [docs/REPORT.md](docs/REPORT.md) covers the design,
 evaluation, results and limitations.
 
+## Demo
+
+![secret-sentry finding eight kinds of fake credential with redacted output, then reporting nothing on the fixed config](docs/demo.svg)
+
+Recorded from `python samples/build_vulnerable.py` and `python scanner.py samples/fixed.py`. All keys are fake and shown redacted.
+
 ## How it works
 
 ```mermaid
